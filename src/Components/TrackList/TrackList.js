@@ -8,7 +8,7 @@ export class TrackList extends React.Component {
     return (
       <div className="TrackList">
         {
-          this.props.searchResults.map(track => {
+          this.props.tracks.map(track => {
             return (
               <Track
                 key={track.id}
@@ -24,6 +24,6 @@ export class TrackList extends React.Component {
 }
 
 TrackList.propTypes = {
-  searchResults: PropTypes.array,
+  tracks: PropTypes.array,
   onAdd: PropTypes.func
 }
