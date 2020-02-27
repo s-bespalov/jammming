@@ -12,8 +12,9 @@ export class TrackList extends React.Component {
             return (
               <Track
                 key={track.id}
-                track="track"
+                track={track}
                 onAdd={this.props.onAdd}
+                isRemoval={this.props.isRemoval}
               />
             );
           })
@@ -25,5 +26,6 @@ export class TrackList extends React.Component {
 
 TrackList.propTypes = {
   tracks: PropTypes.array,
-  onAdd: PropTypes.func
+  onAdd: PropTypes.func,
+  isRemoval: PropTypes.bool
 }

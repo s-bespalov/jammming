@@ -18,7 +18,6 @@ export class Track extends React.Component {
     let button;
     if(this.props.isRemoval)
     {
-
       button = (
         <button className="Track-action" onClick={this.removeTrack}>-</button>
       );

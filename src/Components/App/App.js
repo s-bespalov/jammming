@@ -26,7 +26,7 @@ class App extends React.Component {
       return;
     }
     this.state.playlistTracks.push(track);
-    this.setState();
+    this.setState({});
   }
 
   removeTrack(track) {
@@ -41,13 +41,16 @@ class App extends React.Component {
   }
 
   savePlayList() {
-    let trackURIs; //step 63
+    let trackURIs = this.state.playlistTracks.map(track => track.id); //step 63
+    Deezer.savePlayList(this.state.playlistName, trackURIs);
   }
 
   search(term) {
+    console.log('go search'); // DEBUG:
     Deezer.search(term)
       .then(tracks => {
         console.log(tracks);
+        this.setState({searchResults: tracks})
       })
   }
 

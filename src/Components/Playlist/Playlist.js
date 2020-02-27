@@ -24,7 +24,7 @@ export class Playlist extends React.Component {
         />
         <button
           className="Playlist-save"
-          nClick={this.onSave}
+          onClick={this.onSave}
         >
           SAVE TO SPOTIFY
         </button>
