@@ -1,7 +1,6 @@
 import {DeezerSecrets} from "../secrets/secrets";
 
 const appId = DeezerSecrets.id;
-const appSecret = DeezerSecrets.secret;
 const redirectUrl = "http://localhost:3000/";
 const proxy = "https://cors-anywhere.herokuapp.com/";
 let userAccessToken = "";
@@ -18,21 +17,25 @@ const Deezer = {
     const startTokenIdx = 13;
     const expiresRegx = /expires=([^&]*)/;
     const startExpiresIdx = 8;
-
-    let accessMatch = window.location.href.match(accessRegx);
-    let expiresMath = window.location.href.match(expiresRegx);
-    if(accessMatch && expiresMath) {
-      console.log(window.location.href); // DEBUG:
-      userAccessToken = accessMatch[0].substring(startTokenIdx);
-      expires = Number(expiresMath[0].substring(startExpiresIdx));
-      return userAccessToken;
-    }
-
     const url =
       `https://connect.deezer.com/oauth/auth.php?` +
       `app_id=${appId}&redirect_uri=${redirectUrl}` +
       `&perms=basic_access,email,manage_library` +
       `&response_type=token`;
+
+    let accessMatch = window.location.href.match(accessRegx);
+    let expiresMath = window.location.href.match(expiresRegx);
+    if(accessMatch && expiresMath) {
+      userAccessToken = accessMatch[0].substring(startTokenIdx);
+      expires = Number(expiresMath[0].substring(startExpiresIdx)) * 1000;
+      setTimeout(() => {
+        alert("Authentication is expired. Login needed");
+        window.location = url;
+      }, expires);
+      return userAccessToken;
+    }
+
+
     window.location = url;
   },
 
@@ -74,26 +77,20 @@ const Deezer = {
     //create new playlist
     const url = `https://api.deezer.com/user/${user.id}/playlists` +
       `?access_token=${userAccessToken}` +
-      `&method=POST`+
       `&title=${name}`;
     const response = await fetch(proxy + url, {method: 'POST'});
     const playList = await response.json();
 
     //add songs to the playlist
-    const urlplay = `https://api.deezer.com/playlist/${playList}/tracks` +
-      `?access_token=${userAccessToken}` +
-      `&method=POST`;
+    const urlplay = `https://api.deezer.com/playlist/${playList.id}/tracks` +
+      `?access_token=${userAccessToken}`+
+      `&songs=${tracks.join()}`;
     const responsePlay = await fetch(proxy + urlplay, {
-      method: 'POST',
-      body: JSON.stringify({
-        songs: tracks.join()
-      }),
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      }),
+      method: 'POST'
     });
 
-    console.log(responsePlay);
+    const response2 = await responsePlay.json();
+    console.log(response2);
   }
 
 }

@@ -30,8 +30,8 @@ class App extends React.Component {
   }
 
   removeTrack(track) {
-    let newPlaylist = this.playlistTracks
-      .filter(ltrack => ltrack.id === track.id);
+    let newPlaylist = this.state.playlistTracks
+      .filter(ltrack => ltrack.id !== track.id);
 
     this.setState(
       {
@@ -46,10 +46,8 @@ class App extends React.Component {
   }
 
   search(term) {
-    console.log('go search'); // DEBUG:
     Deezer.search(term)
       .then(tracks => {
-        console.log(tracks);
         this.setState({searchResults: tracks})
       })
   }
