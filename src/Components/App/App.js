@@ -18,7 +18,6 @@ class App extends React.Component {
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlayList = this.savePlayList.bind(this);
     this.search = this.search.bind(this);
-    Deezer.getAccessToken();
   }
 
   addTrack(track) {
@@ -46,6 +45,7 @@ class App extends React.Component {
   }
 
   search(term) {
+    Deezer.getAccessToken();
     Deezer.search(term)
       .then(tracks => {
         this.setState({searchResults: tracks})

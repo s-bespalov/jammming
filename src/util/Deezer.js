@@ -1,8 +1,9 @@
 import {DeezerSecrets} from "../secrets/secrets";
+import Config from "./Config";
 
 const appId = DeezerSecrets.id;
-const redirectUrl = "http://localhost:3000/";
-const proxy = "https://cors-anywhere.herokuapp.com/";
+const redirectUrl = `${Config.host}/`;
+const proxy = `${Config.proxy}/`;
 let userAccessToken = "";
 let expires;
 let user;
