@@ -1,7 +1,6 @@
-import {DeezerSecrets} from "../secrets/secrets";
 import Config from "./Config";
 
-const appId = DeezerSecrets.id;
+const appId = Config.deezerAppId;
 const redirectUrl = `${Config.host}/`;
 const proxy = `${Config.proxy}/`;
 let userAccessToken = "";
