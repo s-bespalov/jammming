@@ -1,10 +1,20 @@
+##Jammming
+
+A website that allows users to search Deezer library. And create playlists.
+
+Github: [https://github.com/s-bespalov/jammming](https://github.com/s-bespalov/jammming)
+
+Gitlab: [https://gitlab.com/fatcutlet/jammming](https://gitlab.com/fatcutlet/jammming)
+
+URL: [https://jammming.azurewebsites.net](https://jammming.azurewebsites.net/)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm start start-dec`
+### `npm run start-dev`
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
