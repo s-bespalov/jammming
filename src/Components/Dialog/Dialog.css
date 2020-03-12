@@ -1,0 +1,60 @@
+.outer {
+  position: fixed;
+  left:0px;
+  top:0px;
+  right:0px;
+  bottom:0px;
+  z-index: 1;
+}
+
+.box {
+  position: relative;
+  top: 40%;
+  margin: auto;
+
+  width: 300px;
+  height: 180px;
+
+  background: rgba(1, 12, 63, 0.9);
+  box-shadow: 6px 6px 8px rgba(0, 0, 0, 0.25);
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.label {
+  margin: auto;
+  padding: .50rem 0;
+}
+
+.content {
+  margin: auto;
+}
+
+.buttons-block {
+  margin-top: 20px;
+}
+
+.dialog-button {
+  background: #6C41EC;
+  border: 1px solid #000000;
+  box-sizing: border-box;
+  border-radius: 54px;
+
+  width: 106px;
+  height: 40px;
+
+  font-family: Work Sans;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 18px;
+  color: #FFFFFF;
+
+  margin: 0 15px;
+}
+
+.dialog-button:hover {
+    background-color: rgba(108, 65, 233, .7);
+}

@@ -3,7 +3,10 @@ import './App.css';
 import {SearchBar} from '../SearchBar/SearchBar';
 import {SearchResults} from '../SearchResults/SearchResults';
 import {Playlist} from '../Playlist/Playlist';
+import {Dialog} from '../Dialog/Dialog';
+import {DialogType} from '../Dialog/Dialog';
 import Deezer from '../../util/Deezer';
+import {ResultStates} from '../../util/Deezer';
 
 class App extends React.Component {
   constructor(props) {
@@ -11,13 +14,18 @@ class App extends React.Component {
     this.state = {
       searchResults: [],
       playlistName: "New Playlist",
-      playlistTracks: []
+      playlistTracks: [],
+      showDialog: false,
+      dialogType: "empty",
+      onOpen: undefined
     };
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlayList = this.savePlayList.bind(this);
     this.search = this.search.bind(this);
+    this.handleCloseDialog = this.handleCloseDialog.bind(this);
+    this.handleResult = this.handleResult.bind(this);
   }
 
   addTrack(track) {
@@ -40,16 +48,37 @@ class App extends React.Component {
   }
 
   savePlayList() {
-    let trackURIs = this.state.playlistTracks.map(track => track.id); //step 63
-    Deezer.savePlayList(this.state.playlistName, trackURIs);
+    let trackURIs = this.state.playlistTracks.map(track => track.id);
+    if (trackURIs.length < 1) {
+      this.setState({
+        showDialog: true,
+        dialogType: DialogType.NothingSave
+      });
+      return;
+    }
+
+    this.setState({
+      showDialog: true,
+      dialogType: DialogType.Saving
+    });
+    Deezer.savePlayList(
+      this.state.playlistName,
+      trackURIs
+    ).then(result => {
+      this.handleResult(result);
+    });
   }
 
   search(term) {
     Deezer.getAccessToken();
     Deezer.search(term)
       .then(tracks => {
+        if(tracks.status) {
+          this.handleResult(tracks);
+          return;
+        }
         this.setState({searchResults: tracks})
-      })
+      });
   }
 
   updatePlaylistName(name) {
@@ -58,6 +87,47 @@ class App extends React.Component {
         playlistName: name
       }
     );
+  }
+
+  handleCloseDialog(clean) {
+    if (clean) {
+      this.setState({
+        showDialog: false,
+        playlistName: "New Playlist",
+        playlistTracks: []
+      })
+    } else {
+      this.setState({
+        showDialog: false
+      })
+    }
+
+  }
+
+  handleOpenPlaylistInDeezer() {
+    Deezer.redirectToPlaylist(this.playlist);
+  }
+
+  handleResult(result) {
+    if(result.status === ResultStates.Success) {
+      this.setState({
+          showDialog: true,
+          dialogType: DialogType.Saved,
+          onOpen: this.handleOpenPlaylistInDeezer.bind({
+            playlist: result.playlist
+          })
+        })
+    } else if (result.status === ResultStates.Failed) {
+      this.setState({
+        showDialog: true,
+        dialogType: DialogType.Failed
+      })
+    } else if (result.status === ResultStates.Expired) {
+      this.setState({
+        showDialog: true,
+        dialogType: DialogType.Expired
+      })
+    }
   }
 
   render() {
@@ -80,6 +150,15 @@ class App extends React.Component {
             />
           </div>
         </div>
+        {this.state.showDialog ?
+          <Dialog
+            dialogType={this.state.dialogType}
+            onClose={this.handleCloseDialog}
+            onOpen={this.state.onOpen}
+            onLogin={Deezer.getAccessToken}
+          />
+          : undefined
+        }
       </div>
     );
   }

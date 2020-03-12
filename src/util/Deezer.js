@@ -8,11 +8,10 @@ let expires;
 let user;
 
 const Deezer = {
-  getAccessToken: function() {
-    if(userAccessToken) {
+  getAccessToken: function(forced) {
+    if(userAccessToken & !forced) {
       return userAccessToken;
     }
-
     const accessRegx = /access_token=([^&]*)/;
     const startTokenIdx = 13;
     const expiresRegx = /expires=([^&]*)/;
@@ -25,7 +24,7 @@ const Deezer = {
 
     let accessMatch = window.location.href.match(accessRegx);
     let expiresMath = window.location.href.match(expiresRegx);
-    if(accessMatch && expiresMath) {
+    if(accessMatch && expiresMath && !forced) {
       userAccessToken = accessMatch[0].substring(startTokenIdx);
       expires = Number(expiresMath[0].substring(startExpiresIdx)) * 1000;
       setTimeout(() => {
@@ -37,6 +36,11 @@ const Deezer = {
 
 
     window.location = url;
+  },
+
+  redirectToPlaylist: function(playlistId) {
+    const url = `https://www.deezer.com/us/playlist/${playlistId}`;
+    window.open(url, '_blank');
   },
 
   getUserId: async function(){
@@ -60,6 +64,13 @@ const Deezer = {
     const response = await fetch(proxy + url);
     const tracks = await response.json();
 
+    if (tracks.error) {
+      if (tracks.error.code === 300) {
+        return {status: ResultStates.Expired};
+      }
+      return {status: ResultStates.Failed}
+    }
+
     return tracks.data.map(track => {
       return {
         id: track.id,
@@ -81,6 +92,13 @@ const Deezer = {
     const response = await fetch(proxy + url, {method: 'POST'});
     const playList = await response.json();
 
+    if (playList.error) {
+      if (playList.error.code === 300) {
+        return {status: ResultStates.Expired};
+      }
+      return {status: ResultStates.Failed}
+    }
+
     //add songs to the playlist
     const urlplay = `https://api.deezer.com/playlist/${playList.id}/tracks` +
       `?access_token=${userAccessToken}`+
@@ -90,9 +108,27 @@ const Deezer = {
     });
 
     const response2 = await responsePlay.json();
-    console.log(response2);
+
+    if (response2.error) {
+      if (response2.error.code === 300) {
+        return {status: ResultStates.Expired};
+      }
+      return {status: ResultStates.Failed}
+    }
+
+    if(response2 === true) {
+      return {status: ResultStates.Success, playlist: playList.id};
+    } else {
+      return {status: ResultStates.Failed};
+    }
   }
 
+}
+
+export const ResultStates = {
+  Success: "success",
+  Failed: "failed",
+  Expired: "expired"
 }
 
 export default Deezer;
