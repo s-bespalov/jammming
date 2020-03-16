@@ -8,6 +8,10 @@ import {DialogType} from '../Dialog/Dialog';
 import Deezer from '../../util/Deezer';
 import {ResultStates} from '../../util/Deezer';
 
+export const SessionKeys = {
+  SEARCH_QUERY_KEY: "search"
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -135,7 +139,9 @@ class App extends React.Component {
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing</h1>
         <div className="App">
-          <SearchBar onSearch={this.search}/>
+          <SearchBar
+            onSearch={this.search}
+          />
           <div className="App-playlist">
             <SearchResults
               searchResults={this.state.searchResults}
