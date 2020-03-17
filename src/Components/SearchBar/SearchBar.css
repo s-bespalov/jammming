@@ -17,6 +17,29 @@
   font-size: 1rem;
 }
 
+.SearchBar ul {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.SearchBar li {
+  padding: 0 2rem .33rem 2rem;
+  border-bottom: 1px solid #120f53;
+  color: #120f53;
+  cursor: pointer;
+}
+
+.SearchBar li:hover {
+  color: #d4cfcf;
+}
+
+.SearchBar li.active,
+.SearchBar li.active:hover {
+  border-bottom: 1px solid #fff;
+  color: #fff;
+}
+
 .SearchBar input:focus {
   outline: none;
 }

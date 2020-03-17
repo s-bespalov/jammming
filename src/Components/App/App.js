@@ -9,7 +9,8 @@ import Deezer from '../../util/Deezer';
 import {ResultStates} from '../../util/Deezer';
 
 export const SessionKeys = {
-  SEARCH_QUERY_KEY: "search"
+  SEARCH_QUERY_KEY: "search",
+  SEARCH_FOR: "search_for"
 }
 
 class App extends React.Component {
@@ -73,9 +74,9 @@ class App extends React.Component {
     });
   }
 
-  search(term) {
+  search(term, searchFor) {
     Deezer.getAccessToken();
-    Deezer.search(term)
+    Deezer.search(term, searchFor)
       .then(tracks => {
         if(tracks.status) {
           this.handleResult(tracks);

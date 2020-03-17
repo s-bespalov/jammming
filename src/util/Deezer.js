@@ -57,8 +57,8 @@ const Deezer = {
     user = {id: userData.id};
   },
 
-  search: async function(term) {
-    const url = `https://api.deezer.com/search?q=track:${term}` +
+  search: async function(term, searchFor) {
+    const url = `https://api.deezer.com/search?q=${searchFor}:"${term}"` +
       `&access_token=${userAccessToken}`;
 
     const response = await fetch(proxy + url);
