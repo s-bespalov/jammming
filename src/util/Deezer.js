@@ -71,13 +71,16 @@ const Deezer = {
       return {status: ResultStates.Failed}
     }
 
+    console.log(tracks); // DEBUG:
+
     return tracks.data.map(track => {
       return {
         id: track.id,
         name: track.title,
         artist: track.artist.name,
         album: track.album.title,
-        uri: track.link
+        uri: track.link,
+        preview: track.preview
       }
     });
   },

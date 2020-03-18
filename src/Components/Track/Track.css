@@ -1,7 +1,10 @@
 .Track {
-  display: flex;
   align-items: center;
   border-bottom: 1px solid rgba(256, 256, 256, 0.8);
+}
+
+.Track-text {
+  display: flex;
 }
 
 .Track-action {
@@ -34,4 +37,8 @@
   font-size: .83rem;
   font-weight: 300;
   color: rgba(256, 256, 256, 0.8);
+}
+
+.Track-audio {
+  margin-bottom: 1rem;
 }
