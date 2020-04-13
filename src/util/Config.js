@@ -10,7 +10,7 @@ const Config = debug? {
   deezerAppId: DeezerSecretsDev.id
 } : {
   //release config
-  host: "https://jammming.azurewebsites.net",
+  host: "https://jammming.outcat.online",
   proxy: "https://cors-anywhere.herokuapp.com",
   deezerAppId: DeezerSecrets.id
 }
