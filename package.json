@@ -9,7 +9,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-scripts": "3.3.1"
+    "react-scripts": "5.0.1"
   },
   "scripts": {
     "start": "serve -s build",
@@ -34,7 +34,7 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
+    "eslint": "^9.39.1",
     "eslint-plugin-react": "^7.18.3",
     "serve": "^11.3.0"
   }
